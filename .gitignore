@@ -1,0 +1,25 @@
+# Secrets / local config
+.env
+config.toml
+*.token
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+venv/
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+
+# Runtime data
+audio_cache/
+*.log
+processed.json
+
+# OS
+.DS_Store

@@ -1,0 +1,49 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "plaud-brain"
+version = "0.1.0"
+description = "Pull recordings off a PLAUD Note, transcribe & summarize them with Gemini, and file the notes into an Obsidian second brain."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [{ name = "Plaud Integration" }]
+keywords = ["plaud", "transcription", "gemini", "obsidian", "second-brain"]
+
+dependencies = [
+    "requests>=2.31",
+    "pydantic>=2.6",
+    "python-dotenv>=1.0",
+    "google-genai>=1.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "ruff>=0.5",
+    "mypy>=1.10",
+    "types-requests",
+]
+
+[project.scripts]
+plaud-brain = "plaud_brain.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/plaud_brain"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "W"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.mypy]
+python_version = "3.11"
+ignore_missing_imports = true

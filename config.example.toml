@@ -1,0 +1,46 @@
+# Copy to config.toml and adjust. Secrets live in .env, NOT here.
+# All paths support ~ expansion.
+
+[plaud]
+# Default region is "default" (https://api.plaud.ai). If you get a
+# "user region mismatch" error, try "apse1".
+region = "default"
+# How many recent recordings to scan per sync (cloud source).
+list_limit = 50
+
+[usb]
+# Where the PLAUD_NOTE device mounts when you enable "Access via USB"
+# in the Plaud app and plug it in:
+#   macOS:  /Volumes/PLAUD_NOTE
+#   Linux:  /media/<you>/PLAUD_NOTE  (or /run/media/<you>/PLAUD_NOTE)
+#   Windows: E:\   (drive letter the device mounts as)
+# Leave blank to disable the USB source.
+mount_path = ""
+# Subfolders on the device to scan for audio.
+folders = ["NOTES", "CALLS"]
+
+[gemini]
+# Model used for both transcription and summarization.
+#   gemini-2.5-flash  -> fast + cheap, great default
+#   gemini-2.5-pro    -> higher quality, slower/pricier
+model = "gemini-2.5-flash"
+# Spoken language hint. "auto" lets Gemini detect it.
+language = "auto"
+
+[obsidian]
+# Root of your Obsidian vault.
+vault_path = "~/Obsidian/SecondBrain"
+# Note files are written under <vault>/<notes_subdir>/
+notes_subdir = "Plaud"
+# Copy the audio file into the vault (so the embedded player works offline).
+copy_audio = true
+# Audio is copied under <vault>/<attachments_subdir>/
+attachments_subdir = "Plaud/audio"
+# Tags added to every note's frontmatter.
+default_tags = ["plaud", "voice-note"]
+
+[pipeline]
+# Downloaded cloud audio is cached here before processing.
+audio_cache_dir = "~/.cache/plaud-brain/audio"
+# Tracks which recordings have already been processed (for idempotent syncs).
+state_file = "~/.local/state/plaud-brain/processed.json"
