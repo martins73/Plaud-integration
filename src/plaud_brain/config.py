@@ -47,6 +47,9 @@ class ObsidianConfig:
     copy_audio: bool = True
     attachments_subdir: str = "Plaud/audio"
     default_tags: list[str] = field(default_factory=lambda: ["plaud", "voice-note"])
+    # Value of the `status:` frontmatter field on new notes, so a downstream
+    # agent can find notes it hasn't ingested yet. Set to "" to omit the field.
+    note_status: str = "unprocessed"
 
     @property
     def notes_dir(self) -> Path:

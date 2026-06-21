@@ -38,6 +38,9 @@ copy_audio = true
 attachments_subdir = "Plaud/audio"
 # Tags added to every note's frontmatter.
 default_tags = ["plaud", "voice-note"]
+# Value of the `status:` frontmatter field, so a downstream agent can find
+# notes it hasn't ingested yet. Set to "" to omit the field entirely.
+note_status = "unprocessed"
 
 [pipeline]
 # Downloaded cloud audio is cached here before processing.

@@ -43,10 +43,31 @@ def test_write_note_creates_markdown(tmp_path):
     assert "plaud_id: abc" in text
     assert "duration: 2:05" in text
     assert "transcribed_with: gemini-2.5-flash" in text
+    assert "status: unprocessed" in text
     assert "  - plaud" in text
     assert "## TL;DR" in text
     assert "## Transcript" in text
     assert "Speaker 1: Hello." in text
+
+
+def test_note_status_configurable(tmp_path):
+    cfg = ObsidianConfig(
+        vault_path=str(tmp_path), notes_subdir="Plaud", copy_audio=False, note_status="inbox"
+    )
+    note = ObsidianVault(cfg).write_note(
+        _rec(), ProcessedContent(transcript="hi", summary=""), audio_path=None
+    )
+    assert "status: inbox" in note.read_text()
+
+
+def test_note_status_omitted_when_blank(tmp_path):
+    cfg = ObsidianConfig(
+        vault_path=str(tmp_path), notes_subdir="Plaud", copy_audio=False, note_status=""
+    )
+    note = ObsidianVault(cfg).write_note(
+        _rec(), ProcessedContent(transcript="hi", summary=""), audio_path=None
+    )
+    assert "status:" not in note.read_text()
 
 
 def test_write_note_copies_audio(tmp_path):

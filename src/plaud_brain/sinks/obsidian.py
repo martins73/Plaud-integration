@@ -82,6 +82,8 @@ class ObsidianVault:
             fm.append(f"duration: {rec.duration_display}")
         if content.model:
             fm.append(f"transcribed_with: {_yaml_escape(content.model)}")
+        if self._cfg.note_status:
+            fm.append(f"status: {_yaml_escape(self._cfg.note_status)}")
         fm.append("tags:")
         fm.extend(f"  - {t}" for t in tags)
         fm.append("---")
