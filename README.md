@@ -88,6 +88,11 @@ plaud-brain sync --source usb
 # Re-process something you've already done
 plaud-brain sync --reprocess
 
+# Ignore recordings forever (e.g. the PLAUD demo clips or empty recordings).
+# Use the ids shown by `plaud-brain list`; sync will skip them from now on.
+plaud-brain skip 168b0d8a4866...  f7503a83a56d...
+plaud-brain unskip 168b0d8a4866...      # changed your mind
+
 # What's been processed so far
 plaud-brain status -v
 ```

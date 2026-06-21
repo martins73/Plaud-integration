@@ -123,6 +123,55 @@ def cmd_status(args: argparse.Namespace) -> int:
     return 0
 
 
+def _normalize_uid(value: str) -> str:
+    """Accept a raw recording id or a full uid; default cloud ids to 'cloud:'."""
+    return value if value.startswith(("cloud:", "usb:")) else f"cloud:{value}"
+
+
+def cmd_skip(args: argparse.Namespace) -> int:
+    """Mark recordings as handled so sync ignores them, without processing them.
+
+    Useful for the PLAUD demo recordings or empty/aborted clips you never
+    want in your vault. Pass the ids shown in `plaud-brain list`.
+    """
+    cfg = _load(args)
+    store = ProcessedStore(cfg.pipeline.state_path)
+
+    # Best-effort: look up nice titles from the cloud so `status` reads well.
+    titles: dict[str, str] = {}
+    if cfg.plaud.token:
+        try:
+            from plaud_brain.plaud import PlaudCloudClient
+
+            client = PlaudCloudClient(cfg.plaud.token, region=cfg.plaud.region)
+            for r in client.list_recordings(limit=max(cfg.plaud.list_limit, len(args.ids))):
+                titles[r.id] = r.title
+        except Exception:  # noqa: BLE001 - titles are cosmetic; ignore failures
+            pass
+
+    for raw in args.ids:
+        uid = _normalize_uid(raw)
+        plain = uid.split(":", 1)[1]
+        title = titles.get(plain, plain)
+        store.mark(uid, source="skip", note_path="(skipped)", title=title)
+        print(f"skipping: {title} ({plain})")
+    print(f"\n{len(args.ids)} recording(s) will now be ignored by sync.")
+    return 0
+
+
+def cmd_unskip(args: argparse.Namespace) -> int:
+    """Undo a skip (or remove any recording from the processed state)."""
+    cfg = _load(args)
+    store = ProcessedStore(cfg.pipeline.state_path)
+    for raw in args.ids:
+        uid = _normalize_uid(raw)
+        if store.forget(uid):
+            print(f"un-skipped: {uid}")
+        else:
+            print(f"not in state: {uid}")
+    return 0
+
+
 # ----------------------------------------------------------------------
 # Helpers
 # ----------------------------------------------------------------------
@@ -212,6 +261,17 @@ def build_parser() -> argparse.ArgumentParser:
     pst = sub.add_parser("status", help="Show processing state")
     pst.add_argument("-v", "--verbose", action="store_true")
     pst.set_defaults(func=cmd_status)
+
+    psk = sub.add_parser(
+        "skip",
+        help="Mark recordings as handled so sync ignores them (e.g. demo clips)",
+    )
+    psk.add_argument("ids", nargs="+", help="Recording id(s) from `plaud-brain list`")
+    psk.set_defaults(func=cmd_skip)
+
+    pus = sub.add_parser("unskip", help="Undo skip / forget a recording from state")
+    pus.add_argument("ids", nargs="+", help="Recording id(s) to remove from state")
+    pus.set_defaults(func=cmd_unskip)
 
     return p
 
