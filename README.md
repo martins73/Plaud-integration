@@ -136,6 +136,33 @@ Speaker 1: ...
 Speaker 2: ...
 ```
 
+## Automatic syncing (macOS)
+
+Run `sync` on a schedule with the bundled `launchd` helper:
+
+```bash
+scripts/install-scheduler.sh          # every 30 minutes (default)
+scripts/install-scheduler.sh 3600     # hourly
+scripts/install-scheduler.sh 86400    # daily
+
+tail -f ~/Library/Logs/plaud-brain/sync.log   # watch it
+scripts/uninstall-scheduler.sh                # stop
+```
+
+There's no push notification from PLAUD, so "on every new recording" is
+approximated by polling (every 30–60 min is a good balance).
+
+> **Token caveat for unattended use.** The PLAUD access token expires ~24h
+> after you grab it. Scheduled syncs work fine while you're around to re-auth,
+> but to run unattended for days (e.g. while travelling) the tool needs
+> token auto-refresh — see the Roadmap. Until then, the wrapper logs failures
+> and shows a desktop notification so you know to run `plaud-brain auth` again.
+> The **USB source** has no token and never expires, but only sees recordings
+> while the device is physically plugged in.
+
+The Mac must be awake (not asleep) for scheduled runs to fire; on a desktop
+that stays on, adjust Energy Saver to prevent sleep.
+
 ## How it fits together
 
 ```
@@ -171,6 +198,8 @@ The tests stub out PLAUD and Gemini, so they run without credentials.
 - [ ] Optional Notion or Logseq sink
 - [ ] Auto-linking entities (people, projects) for graph connections
 - [ ] Incremental cloud sync via stored cursor instead of full list scans
+- [ ] **Token auto-refresh** — use the 30-day refresh token to renew the 24h
+      access token automatically, so scheduled cloud syncs survive unattended.
 
 ## Legal / privacy
 
