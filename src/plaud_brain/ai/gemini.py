@@ -37,7 +37,7 @@ def _guess_mime(path: Path) -> str:
 class GeminiProcessor:
     """Transcribe + summarize audio with a single Gemini model."""
 
-    def __init__(self, api_key: str, *, model: str = "gemini-2.5-flash", language: str = "auto"):
+    def __init__(self, api_key: str, *, model: str = "gemini-3.5-flash", language: str = "auto"):
         if not api_key:
             raise ValueError(
                 "No GEMINI_API_KEY. Add it to your .env (get a key at "

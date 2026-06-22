@@ -17,7 +17,7 @@ def test_load_defaults_without_file(tmp_path, monkeypatch):
     monkeypatch.delenv("PLAUD_TOKEN", raising=False)
     monkeypatch.delenv("GEMINI_API_KEY", raising=False)
     cfg = load_config()
-    assert cfg.gemini.model == "gemini-2.5-flash"
+    assert cfg.gemini.model == "gemini-3.5-flash"
     assert cfg.plaud.region == "default"
     assert cfg.usb.enabled is False
     assert cfg.obsidian.default_tags == ["plaud", "voice-note"]

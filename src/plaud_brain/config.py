@@ -35,7 +35,7 @@ class UsbConfig:
 
 @dataclass(slots=True)
 class GeminiConfig:
-    model: str = "gemini-2.5-flash"
+    model: str = "gemini-3.5-flash"
     language: str = "auto"
     api_key: str = ""  # from GEMINI_API_KEY env / .env
 

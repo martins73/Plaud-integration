@@ -21,9 +21,10 @@ folders = ["NOTES", "CALLS"]
 
 [gemini]
 # Model used for both transcription and summarization.
-#   gemini-2.5-flash  -> fast + cheap, great default
-#   gemini-2.5-pro    -> higher quality, slower/pricier
-model = "gemini-2.5-flash"
+#   gemini-3.5-flash  -> latest Flash (GA May 2026), great default
+#   gemini-3.5-pro    -> higher quality, slower/pricier (if available on your key)
+#   gemini-2.5-flash  -> previous generation, cheaper
+model = "gemini-3.5-flash"
 # Spoken language hint. "auto" lets Gemini detect it.
 language = "auto"
 

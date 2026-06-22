@@ -108,7 +108,7 @@ date: 2026-06-16
 source: cloud
 plaud_id: 66a1...
 duration: 2:05
-transcribed_with: gemini-2.5-flash
+transcribed_with: gemini-3.5-flash
 tags:
   - plaud
   - voice-note
