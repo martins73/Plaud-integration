@@ -74,7 +74,8 @@ class ObsidianVault:
             f"title: {_yaml_escape(rec.title)}",
             f"date: {rec.created_at.strftime('%Y-%m-%d')}",
             f"created: {rec.created_at.isoformat()}",
-            f"source: {rec.source}",
+            "source: plaud",
+            f"method: {rec.source}",
         ]
         if rec.extra.get("plaud_id"):
             fm.append(f"plaud_id: {_yaml_escape(str(rec.extra['plaud_id']))}")

@@ -39,7 +39,8 @@ def test_write_note_creates_markdown(tmp_path):
     text = note.read_text()
     assert text.startswith("---\n")
     assert 'title: "Team Sync: Q3 Planning"' in text  # colon forces quoting
-    assert "source: cloud" in text
+    assert "source: plaud" in text
+    assert "method: cloud" in text
     assert "plaud_id: abc" in text
     assert "duration: 2:05" in text
     assert "transcribed_with: gemini-2.5-flash" in text
