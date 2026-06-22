@@ -141,16 +141,17 @@ Speaker 2: ...
 Run `sync` on a schedule with the bundled `launchd` helper:
 
 ```bash
+scripts/install-scheduler.sh 20:00    # every day at 8:00 PM
 scripts/install-scheduler.sh          # every 30 minutes (default)
 scripts/install-scheduler.sh 3600     # hourly
-scripts/install-scheduler.sh 86400    # daily
 
 tail -f ~/Library/Logs/plaud-brain/sync.log   # watch it
 scripts/uninstall-scheduler.sh                # stop
 ```
 
-There's no push notification from PLAUD, so "on every new recording" is
-approximated by polling (every 30–60 min is a good balance).
+The argument is either `HH:MM` (24-hour clock, runs daily) or a number of
+seconds. There's no push notification from PLAUD, so "on every new recording"
+is approximated by polling — once a day is plenty for most people.
 
 > **Token caveat for unattended use.** The PLAUD access token expires ~24h
 > after you grab it. Scheduled syncs work fine while you're around to re-auth,
